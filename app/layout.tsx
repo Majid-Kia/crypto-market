@@ -1,4 +1,5 @@
 import { Navbar } from "@/components/Navbar";
+import { ReactQueryProvider } from "@/lib/react-query-provider";
 import type { Metadata } from "next";
 import { Vazirmatn } from "next/font/google";
 import "./globals.css";
@@ -19,8 +20,10 @@ export default function RootLayout({
   return (
     <html lang="fa" dir="rtl" className={vazirMatn.className}>
       <body className="bg-background ">
-        <Navbar />
-        {children}
+        <ReactQueryProvider>
+          <Navbar />
+          {children}
+        </ReactQueryProvider>
       </body>
     </html>
   );

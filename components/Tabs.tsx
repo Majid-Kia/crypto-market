@@ -3,7 +3,7 @@
 import { useState, ReactNode } from "react";
 
 interface Tab {
-  label: string;
+  label: ReactNode;
   content: ReactNode;
 }
 
@@ -15,8 +15,8 @@ const Tabs: React.FC<TabsProps> = ({ tabs }) => {
   const [activeTab, setActiveTab] = useState<number>(0);
 
   return (
-    <div>
-      <div className="flex border-b border-border">
+    <div className="w-full">
+      <div className="flex border-b border-border ">
         {tabs.map((tab, index) => (
           <button
             key={index}
@@ -32,7 +32,9 @@ const Tabs: React.FC<TabsProps> = ({ tabs }) => {
         ))}
       </div>
 
-      <div className="py-4 text-primary-text">{tabs[activeTab]?.content}</div>
+      <div className="py-4 text-primary-text w-full">
+        {tabs[activeTab]?.content}
+      </div>
     </div>
   );
 };
