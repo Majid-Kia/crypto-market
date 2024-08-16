@@ -1,20 +1,19 @@
 "use client";
 import React, { useState } from "react";
 import Tabs from "@/components/Tabs";
-import { useMarkets } from "@/lib/api";
 import MarketCard from "@/components/MarketCard";
 import Pagination from "@/components/Pagination";
+import { Market } from "@/types/markets";
 
-const MarketList = () => {
-  const { data: markets = [], isLoading, error } = useMarkets();
+type PropTypes = {
+  markets: Market[];
+};
+const MarketList = ({ markets }: PropTypes) => {
   const [tab, setTab] = useState<"IRT" | "USDT">("IRT");
   const [irtPage, setIrtPage] = useState(1); // Pagination for IRT tab
   const [usdtPage, setUsdtPage] = useState(1); // Pagination for USDT tab
 
   const itemsPerPage = 10;
-
-  if (isLoading) return <p>Loading...</p>;
-  if (error) return <p>Error loading markets</p>;
 
   // Filter markets based on the selected tab
   const filteredMarkets = markets.filter(
@@ -68,7 +67,7 @@ const MarketList = () => {
   ];
 
   return (
-    <div className=" w-full">
+    <div className="p-4 max-w-4xl mx-auto">
       <Tabs tabs={tabs} />
       <Pagination
         currentPage={currentPage}

@@ -1,9 +1,12 @@
 import MarketList from "@/modules/MarketList";
+import { fetchMarkets } from "@/lib/api";
 
-export default function Home() {
+export default async function Home() {
+  const marekts = await fetchMarkets();
+
   return (
     <div className="container m-auto">
-      <MarketList />
+      {marekts?.length && <MarketList markets={marekts} />}
     </div>
   );
 }

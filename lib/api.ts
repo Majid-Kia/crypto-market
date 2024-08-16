@@ -1,6 +1,8 @@
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
 import { MarketListApi } from "@/types/markets";
+import { Order } from "@/types/order";
+import { Trade } from "@/types/trades";
 
 const apiClient = axios.create({
   baseURL: "https://api.bitpin.org",
@@ -16,7 +18,7 @@ const handleApiError = (error: any) => {
 };
 
 // Fetch market data
-const fetchMarkets = async () => {
+export const fetchMarkets = async () => {
   try {
     const { data } = await apiClient.get<MarketListApi>("/v1/mkt/markets/");
     return data.results;
@@ -28,9 +30,12 @@ const fetchMarkets = async () => {
 // Fetch buy/sell orders for a specific market
 const fetchMarketOrders = async (marketId: string, type: "buy" | "sell") => {
   try {
-    const { data } = await apiClient.get(`/v2/mth/actives/${marketId}/`, {
-      params: { type },
-    });
+    const { data } = await apiClient.get<{ orders: Order[] }>(
+      `/v2/mth/actives/${marketId}/`,
+      {
+        params: { type },
+      }
+    );
     return data.orders.slice(0, 10); // Limit to 10 orders
   } catch (error) {
     handleApiError(error);
@@ -40,7 +45,9 @@ const fetchMarketOrders = async (marketId: string, type: "buy" | "sell") => {
 // Fetch trades for a specific market
 const fetchMarketTrades = async (marketId: string) => {
   try {
-    const { data } = await apiClient.get(`/v1/mth/matches/${marketId}/`);
+    const { data } = await apiClient.get<Trade[]>(
+      `/v1/mth/matches/${marketId}/`
+    );
     return data.slice(0, 10); // Limit to 10 trades
   } catch (error) {
     handleApiError(error);

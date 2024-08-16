@@ -21,10 +21,10 @@ export default function MarketCard({ market }: MarketCardProps) {
             height={45}
           />
         </div>
-        <div className="flex mr-4 grow text-primary-text">
-          <h3 className="w-1/4">{market.title}</h3>
-          <p className="w-1/4">قیمت: {market.price}</p>
-          <p className="w-1/4">
+        <div className="flex mr-4 grow text-primary-text max-sm:flex-col">
+          <h3 className="w-full sm:w-1/4 mb-2 sm:mb-0">{market.title}</h3>
+          <p className="w-full sm:w-1/4 mb-2 sm:mb-0">قیمت: {market.price}</p>
+          <p className="w-full sm:w-1/4">
             کد: {market.currency1.code}/{market.currency2.code}
           </p>
         </div>

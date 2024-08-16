@@ -18,9 +18,9 @@ const Tabs: React.FC<TabsProps> = ({ tabs }) => {
     <div className="w-full">
       <div className="flex border-b border-border ">
         {tabs.map((tab, index) => (
-          <button
+          <span
             key={index}
-            className={`px-4 py-2 transition-colors duration-300 border-b-2 border-transparent ${
+            className={`cursor-pointer px-2 sm:px-4 py-2 transition-colors duration-300 border-b-2 border-transparent ${
               activeTab === index
                 ? "!border-accent-color text-accent-color"
                 : "text-secondary-text hover:text-accent-color"
@@ -28,7 +28,7 @@ const Tabs: React.FC<TabsProps> = ({ tabs }) => {
             onClick={() => setActiveTab(index)}
           >
             {tab.label}
-          </button>
+          </span>
         ))}
       </div>
 
