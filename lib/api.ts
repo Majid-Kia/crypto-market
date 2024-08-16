@@ -11,10 +11,7 @@ const apiClient = axios.create({
 
 // Centralized error handling for API requests
 const handleApiError = (error: any) => {
-  console.error("API request failed", error);
-  throw new Error(
-    "An error occurred while fetching data. Please try again later."
-  );
+  console.error("API request failed", error?.response);
 };
 
 // Fetch market data
