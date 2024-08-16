@@ -14,6 +14,7 @@ const MarketList = ({ markets }: PropTypes) => {
   const [usdtPage, setUsdtPage] = useState(1); // Pagination for USDT tab
 
   const itemsPerPage = 10;
+  const tabIndex = tab === "IRT" ? 0 : 1;
 
   // Filter markets based on the selected tab
   const filteredMarkets = markets.filter(
@@ -30,10 +31,10 @@ const MarketList = ({ markets }: PropTypes) => {
   );
 
   // Function to handle tab change
-  const handleTabChange = (newTab: "IRT" | "USDT") => {
+  const handleTabChange = (newTabIndex: number) => {
+    const newTab = newTabIndex === 0 ? "IRT" : "USDT";
     setTab(newTab);
   };
-
   // Function to handle page changes, updating the correct page state based on the current tab
   const handlePageChange = (page: number) => {
     if (tab === "IRT") {
@@ -45,7 +46,7 @@ const MarketList = ({ markets }: PropTypes) => {
 
   const tabs = [
     {
-      label: <span onClick={() => handleTabChange("IRT")}>تومان</span>,
+      label: <span onClick={() => handleTabChange(0)}>تومان</span>,
       content: (
         <ul className=" w-full">
           {paginatedMarkets.map((market) => (
@@ -55,7 +56,7 @@ const MarketList = ({ markets }: PropTypes) => {
       ),
     },
     {
-      label: <span onClick={() => handleTabChange("USDT")}>تتر</span>,
+      label: <span onClick={() => handleTabChange(1)}>تتر</span>,
       content: (
         <ul className=" w-full">
           {paginatedMarkets.map((market) => (
@@ -68,7 +69,7 @@ const MarketList = ({ markets }: PropTypes) => {
 
   return (
     <div className="p-4 max-w-4xl mx-auto">
-      <Tabs tabs={tabs} />
+      <Tabs tabs={tabs} onTabChange={handleTabChange} activeTab={tabIndex} />
       <Pagination
         currentPage={currentPage}
         totalItems={filteredMarkets.length}

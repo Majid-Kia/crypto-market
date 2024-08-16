@@ -8,7 +8,7 @@ import Trades from "@/components/Trades";
 
 export default function MarketDetail({ id }: { id: string }) {
   const [percentage, setPercentage] = useState(0);
-  const [tab, setTab] = useState<"buy" | "sell" | "trades">("buy"); // Manage active tab
+  const [tab, setTab] = useState<"buy" | "sell" | "trades">("buy");
 
   const { data: buyOrders = [], isLoading: isLoadingBuyOrders } =
     useMarketOrders(id, "buy");
@@ -16,27 +16,28 @@ export default function MarketDetail({ id }: { id: string }) {
     useMarketOrders(id, "sell");
   const { data: trades = [] } = useMarketTrades(id);
 
-  const handleTabChange = (newTab: "buy" | "sell" | "trades") => {
+  const handleTabChange = (newTabIndex: number) => {
+    const newTab =
+      newTabIndex === 0 ? "buy" : newTabIndex === 1 ? "sell" : "trades";
     setTab(newTab);
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-
-    // Allow empty input or numbers only
     if (value === "" || /^[0-9\b]+$/.test(value)) {
       setPercentage(Number(value));
     }
   };
 
+  const tabIndex = tab === "buy" ? 0 : tab === "sell" ? 1 : 2;
+
   const tabs = [
     {
       label: (
         <button
-          onClick={() => handleTabChange("buy")}
+          onClick={() => handleTabChange(0)}
           disabled={tab === "buy"}
-          className={`sm:px-4 py-2 rounded-lg font-semibold "
-          }`}
+          className={`sm:px-4 py-2 rounded-lg font-semibold`}
         >
           سفارشات خرید
         </button>
@@ -53,7 +54,7 @@ export default function MarketDetail({ id }: { id: string }) {
     {
       label: (
         <button
-          onClick={() => handleTabChange("sell")}
+          onClick={() => handleTabChange(1)}
           disabled={tab === "sell"}
           className={`sm:px-4 py-2 rounded-lg font-semibold`}
         >
@@ -72,9 +73,9 @@ export default function MarketDetail({ id }: { id: string }) {
     {
       label: (
         <button
-          onClick={() => handleTabChange("trades")}
+          onClick={() => handleTabChange(2)}
           disabled={tab === "trades"}
-          className={`sm:px-4 py-2 rounded-lg font-semibold `}
+          className={`sm:px-4 py-2 rounded-lg font-semibold`}
         >
           معاملات
         </button>
@@ -98,7 +99,7 @@ export default function MarketDetail({ id }: { id: string }) {
         />
       </div>
 
-      <Tabs tabs={tabs} />
+      <Tabs tabs={tabs} activeTab={tabIndex} onTabChange={handleTabChange} />
     </div>
   );
 }

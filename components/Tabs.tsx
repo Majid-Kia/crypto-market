@@ -1,6 +1,5 @@
-"use client";
-
-import { useState, ReactNode } from "react";
+import React, { useState, ReactNode } from "react";
+import { useSwipeable } from "react-swipeable";
 
 interface Tab {
   label: ReactNode;
@@ -9,14 +8,31 @@ interface Tab {
 
 interface TabsProps {
   tabs: Tab[];
+  activeTab: number;
+  onTabChange: (index: number) => void;
 }
 
-const Tabs: React.FC<TabsProps> = ({ tabs }) => {
-  const [activeTab, setActiveTab] = useState<number>(0);
+const Tabs: React.FC<TabsProps> = ({ tabs, activeTab, onTabChange }) => {
+  const handleSwipeLeft = () => {
+    if (activeTab < tabs.length - 1) {
+      onTabChange(activeTab + 1);
+    }
+  };
+
+  const handleSwipeRight = () => {
+    if (activeTab > 0) {
+      onTabChange(activeTab - 1);
+    }
+  };
+
+  const swipeHandlers = useSwipeable({
+    onSwipedLeft: handleSwipeLeft,
+    onSwipedRight: handleSwipeRight,
+  });
 
   return (
-    <div className="w-full">
-      <div className="flex border-b border-border ">
+    <div {...swipeHandlers} className="w-full" style={{ touchAction: "pan-y" }}>
+      <div className="flex border-b border-border">
         {tabs.map((tab, index) => (
           <span
             key={index}
@@ -25,14 +41,14 @@ const Tabs: React.FC<TabsProps> = ({ tabs }) => {
                 ? "!border-accent-color text-accent-color"
                 : "text-secondary-text hover:text-accent-color"
             }`}
-            onClick={() => setActiveTab(index)}
+            onClick={() => onTabChange(index)}
           >
             {tab.label}
           </span>
         ))}
       </div>
 
-      <div className="py-4 text-primary-text w-full">
+      <div key={activeTab} className="py-4 text-primary-text w-full">
         {tabs[activeTab]?.content}
       </div>
     </div>
